@@ -8,6 +8,13 @@
             "type": "java",
             "name": "WindowApp",
             "request": "launch",
+            "mainClass": "buoi4.MVC_Bean.WindowApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "WindowApp",
+            "request": "launch",
             "mainClass": "buoi4.MVC_ObserverJava.WindowApp",
             "projectName": "DP221402_9ee3b516"
         },
