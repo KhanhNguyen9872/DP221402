@@ -2,9 +2,8 @@ package buoi4.MVC_Bean;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
 
-public class CalculatorModel implements Serializable {
+public class CalculatorModel {
     private double result;
     private PropertyChangeSupport pcs;
 
