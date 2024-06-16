@@ -6,6 +6,76 @@
     "configurations": [
         {
             "type": "java",
+            "name": "WindowApp",
+            "request": "launch",
+            "mainClass": "buoi4.MVC_ObserverJava.WindowApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "WindowApp",
+            "request": "launch",
+            "mainClass": "buoi4.MVC.WindowApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "WindowApp",
+            "request": "launch",
+            "mainClass": "buoi4.ECB.MVC.WindowApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "WindowApp",
+            "request": "launch",
+            "mainClass": "buoi4.ECB.WindowApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "WindowApp",
+            "request": "launch",
+            "mainClass": "buoi4.WindowApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "WindowApp",
+            "request": "launch",
+            "mainClass": "buoi3.swing.WindowApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "DepenApp",
+            "request": "launch",
+            "mainClass": "buoi2.dependency.DepenApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "CompoApp",
+            "request": "launch",
+            "mainClass": "buoi2.composition.CompoApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "AssoApp",
+            "request": "launch",
+            "mainClass": "buoi2.association.AssoApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "CalculatorApp",
+            "request": "launch",
+            "mainClass": "oop.CalculatorApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
             "name": "App",
             "request": "launch",
             "mainClass": "oop.App",

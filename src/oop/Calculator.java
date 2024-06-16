@@ -1,15 +1,20 @@
 package oop;
 
 public class Calculator {
-    private int a;
-    private int b;
+    
+    //fields, attribute, instance => state
+    int a;
+    int b;
 
-    public Calculator(int a, int b) {
-        this.a = a;
-        this.b = b;
-    };
 
-    public int multiply() {
-        return this.a * this.b;
-    };
-};
+    //methods , function
+    Calculator(){
+        a = 2;
+        b = 2;
+    }
+
+    int multiply(){
+        return a * b;
+    }
+
+}
