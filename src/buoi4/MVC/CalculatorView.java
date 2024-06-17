@@ -1,13 +1,13 @@
 package buoi4.MVC;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -24,6 +24,7 @@ public class CalculatorView extends JFrame implements Subscriber {
     private JButton addButtonRemote, subButtonRemote, mulButtonRemote, divButtonRemote;
     private CalculatorModel calculatorModelRemote;
     private CalculatorControl calculatorControlRemote = new CalculatorControl();
+    private JMenuBar menuBarRemote;
 
     public JTextField getjTextFieldInput1Remote() {
         return jTextFieldInput1Remote;
@@ -45,11 +46,14 @@ public class CalculatorView extends JFrame implements Subscriber {
     CalculatorView() {
         calculatorModelRemote = new CalculatorModel();
         calculatorModelRemote.subscriber(this);
+
+        buildMenu();
         buildPanel();
         add(jPanelRemote);
         title = "Frame Viewer";
         setTitle(title);
         setSize(400, 400);
+        setJMenuBar(menuBarRemote);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -61,6 +65,13 @@ public class CalculatorView extends JFrame implements Subscriber {
     //     this.addButtonRemote.
     //     addActionListener(this.calculatorControlRemote);
     // }
+
+    public void buildMenu() {
+        menuBarRemote = new JMenuBar();
+        JMenu calMenuRemote = new JMenu("Calculator");
+
+        menuBarRemote.add(calMenuRemote);
+    }
 
     public void buildPanel() {
         jPanelRemote = new JPanel();
