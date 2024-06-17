@@ -3,11 +3,13 @@ package buoi4.MVC;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -24,6 +26,7 @@ public class CalculatorView extends JFrame implements Subscriber {
     private JButton addButtonRemote, subButtonRemote, mulButtonRemote, divButtonRemote;
     private CalculatorModel calculatorModelRemote;
     private CalculatorControl calculatorControlRemote = new CalculatorControl();
+    private MenuControl menuControlRemote = new MenuControl();
     private JMenuBar menuBarRemote;
 
     public JTextField getjTextFieldInput1Remote() {
@@ -69,6 +72,20 @@ public class CalculatorView extends JFrame implements Subscriber {
     public void buildMenu() {
         menuBarRemote = new JMenuBar();
         JMenu calMenuRemote = new JMenu("Calculator");
+        JMenuItem addItem = new JMenuItem("ADD");
+        JMenuItem subItem = new JMenuItem("SUB");
+        JMenuItem mulItem = new JMenuItem("MUL");
+        JMenuItem divItem = new JMenuItem("DIV");
+
+        addItem.addActionListener(menuControlRemote);
+        subItem.addActionListener(menuControlRemote);
+        mulItem.addActionListener(menuControlRemote);
+        divItem.addActionListener(menuControlRemote);
+        
+        calMenuRemote.add(addItem);
+        calMenuRemote.add(subItem);
+        calMenuRemote.add(mulItem);
+        calMenuRemote.add(divItem);
 
         menuBarRemote.add(calMenuRemote);
     }
@@ -102,6 +119,30 @@ public class CalculatorView extends JFrame implements Subscriber {
         // jPanelRemote.setBackground(Color.BLUE);
 
     }
+
+    class MenuControl implements ActionListener {
+        public MenuControl() {
+
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String cmd = e.getActionCommand();
+            double a = Double.parseDouble(getjTextFieldInput1Remote().getText());
+            double b = Double.parseDouble(getjTextFieldInput2Remote().getText());
+
+            if (cmd.equals("ADD")) {
+                calculatorModelRemote.add(a, b);
+            } else if (cmd.equals("SUB")) {
+                calculatorModelRemote.sub(a, b);
+            } else if (cmd.equals("MUL")) {
+                calculatorModelRemote.mul(a, b);
+            } else if (cmd.equals("DIV")) {
+                calculatorModelRemote.div(a, b);
+            }
+        }
+    }
+
 
     class CalculatorControl implements ActionListener {
         public CalculatorControl() {
