@@ -3,7 +3,6 @@ package buoi4.MVC;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,8 +24,8 @@ public class CalculatorView extends JFrame implements Subscriber {
     private JTextField jTextFieldInput1Remote, jTextFieldInput2Remote;
     private JButton addButtonRemote, subButtonRemote, mulButtonRemote, divButtonRemote;
     private CalculatorModel calculatorModelRemote;
-    private CalculatorControl calculatorControlRemote = new CalculatorControl();
-    private MenuControl menuControlRemote = new MenuControl();
+    private CalculatorController calculatorControllerRemote = new CalculatorController();
+    private MenuController menuControllerRemote = new MenuController();
     private JMenuBar menuBarRemote;
 
     public JTextField getjTextFieldInput1Remote() {
@@ -41,8 +40,8 @@ public class CalculatorView extends JFrame implements Subscriber {
         return jLabelOutputRemote;
     }
 
-    public CalculatorControl getCalculatorControlRemote() {
-        return this.calculatorControlRemote;
+    public CalculatorController getCalculatorControlRemote() {
+        return this.calculatorControllerRemote;
     }
 
     // function , method
@@ -77,10 +76,10 @@ public class CalculatorView extends JFrame implements Subscriber {
         JMenuItem mulItem = new JMenuItem("MUL");
         JMenuItem divItem = new JMenuItem("DIV");
 
-        addItem.addActionListener(menuControlRemote);
-        subItem.addActionListener(menuControlRemote);
-        mulItem.addActionListener(menuControlRemote);
-        divItem.addActionListener(menuControlRemote);
+        addItem.addActionListener(menuControllerRemote);
+        subItem.addActionListener(menuControllerRemote);
+        mulItem.addActionListener(menuControllerRemote);
+        divItem.addActionListener(menuControllerRemote);
         
         calMenuRemote.add(addItem);
         calMenuRemote.add(subItem);
@@ -103,16 +102,16 @@ public class CalculatorView extends JFrame implements Subscriber {
         jPanelRemote.add(jTextFieldInput2Remote);
         jPanelRemote.add(jLabelOutputRemote);
         addButtonRemote = new JButton("ADD");
-        addButtonRemote.addActionListener(calculatorControlRemote);// Remote của CalculatorWindow
+        addButtonRemote.addActionListener(calculatorControllerRemote);// Remote của CalculatorWindow
         jPanelRemote.add(addButtonRemote);
         subButtonRemote = new JButton("SUB");
-        subButtonRemote.addActionListener(calculatorControlRemote);// Remote của CalculatorWindow
+        subButtonRemote.addActionListener(calculatorControllerRemote);// Remote của CalculatorWindow
         jPanelRemote.add(subButtonRemote);
         mulButtonRemote = new JButton("MUL");
-        mulButtonRemote.addActionListener(calculatorControlRemote);
+        mulButtonRemote.addActionListener(calculatorControllerRemote);
         jPanelRemote.add(mulButtonRemote);
         divButtonRemote = new JButton("DIV");
-        divButtonRemote.addActionListener(calculatorControlRemote);
+        divButtonRemote.addActionListener(calculatorControllerRemote);
         jPanelRemote.add(divButtonRemote);
         //subButtonRemote.addActionListener(this);
 
@@ -120,8 +119,8 @@ public class CalculatorView extends JFrame implements Subscriber {
 
     }
 
-    class MenuControl implements ActionListener {
-        public MenuControl() {
+    class MenuController implements ActionListener {
+        public MenuController() {
 
         }
 
@@ -144,9 +143,20 @@ public class CalculatorView extends JFrame implements Subscriber {
     }
 
 
-    class CalculatorControl implements ActionListener {
-        public CalculatorControl() {
+    class CalculatorController implements ActionListener {
 
+        private static CalculatorController calculatorControllerRemote = null;
+
+        private CalculatorController() {
+
+        }
+
+        public static CalculatorController makeCalculatorController() {
+            if(calculatorControllerRemote == null) {
+                calculatorControllerRemote = new CalculatorController();
+            }
+
+            return calculatorControllerRemote;
         }
 
         @Override
