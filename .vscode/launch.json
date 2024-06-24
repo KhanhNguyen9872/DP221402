@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TemperatureApp",
+            "request": "launch",
+            "mainClass": "Temperature.TemperatureApp",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
             "name": "WindowApp",
             "request": "launch",
             "mainClass": "buoi5.MVC_CommandProcessor.WindowApp",
