@@ -3,7 +3,7 @@ package Temperature;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
-import javax.swing.JFrame;
+import javax.swing.JFrame; 
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -20,36 +20,51 @@ public class TemperatureView extends JFrame implements Subscriber {
     private JTextField jTextFieldInput1Remote, jTextFieldInput2Remote;
     private JPanel jPanelRemote;
     private JMenuBar menuBarRemote;
-    private MenuController menuControllerRemote = new MenuController();
+    private JMenuItem f2c, c2f, exit;
     private TemperatureModel temperatureModelRemote;
+    private EnterController enterControllerRemote;
     private boolean isC = false;
 
-    TemperatureView() {
-        temperatureModelRemote = new TemperatureModel();
+    TemperatureView(TemperatureModel temperatureModel) {
+        temperatureModelRemote = temperatureModel;
         temperatureModelRemote.subscriber(this);
 
         buildMenu();
         buildPanel();
         add(jPanelRemote);
-        title = "Temprature Converter";
+        title = "Temperature Converter";
         setTitle(title);
         setSize(400, 400);
         setJMenuBar(menuBarRemote);
-        setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+    }
+
+    public void Show() {
+        setVisible(true);
+    }
+
+    public void setIsC(boolean isC) {
+        this.isC = isC;
+    }
+
+    public void setMenuController(MenuController menuController) {
+        f2c.addActionListener(menuController);
+        c2f.addActionListener(menuController);
+        exit.addActionListener(menuController);
+    }
+
+    public void setEnterController(EnterController enterController) {
+        jTextFieldInput1Remote.addActionListener(enterController);
+        jTextFieldInput2Remote.addActionListener(enterController);
     }
 
     public void buildMenu() {
         menuBarRemote = new JMenuBar();
         JMenu commandJMenu = new JMenu("Commands");
-        JMenuItem f2c = new JMenuItem("f2c");
-        JMenuItem c2f = new JMenuItem("c2f");
-        JMenuItem exit = new JMenuItem("exit");
-
-        f2c.addActionListener(menuControllerRemote);
-        c2f.addActionListener(menuControllerRemote);
-        exit.addActionListener(menuControllerRemote);
+        f2c = new JMenuItem("f2c");
+        c2f = new JMenuItem("c2f");
+        exit = new JMenuItem("exit");
         
         commandJMenu.add(f2c);
         commandJMenu.add(c2f);
@@ -69,6 +84,9 @@ public class TemperatureView extends JFrame implements Subscriber {
         jPanelRemote.add(jLabelInput2Remote);
         jPanelRemote.add(jTextFieldInput2Remote);
 
+        // enterController
+        jTextFieldInput1Remote.addActionListener(enterControllerRemote);
+        jTextFieldInput2Remote.addActionListener(enterControllerRemote);
     }
 
     public JTextField getjTextFieldInput1Remote() {
@@ -79,32 +97,6 @@ public class TemperatureView extends JFrame implements Subscriber {
         return jTextFieldInput2Remote;
     }
 
-    class MenuController implements ActionListener {
-        public MenuController() {
-
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String cmd = e.getActionCommand();
-            double c, f;
-
-            if (cmd.equals("f2c")) {
-                f = Double.parseDouble(getjTextFieldInput2Remote().getText());
-                isC = true;
-
-                temperatureModelRemote.f2c(f);
-                
-            } else if (cmd.equals("c2f")) {
-                c = Double.parseDouble(getjTextFieldInput1Remote().getText());
-                isC = false;
-                
-                temperatureModelRemote.c2f(c);
-            } else if (cmd.equals("exit")) {
-                temperatureModelRemote.exit();
-            }
-        }
-    }
 
     @Override
     public void update() {
