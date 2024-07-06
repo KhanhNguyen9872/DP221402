@@ -12,9 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 
+import Temperature.commandprocessor.*;
 import Temperature.observer.Subscriber;
 
-public class TemperatureView extends JFrame implements Subscriber {
+public class TemperatureView extends JFrame implements Subscriber, ActionListener {
     private String title;
     private JLabel jLabelInput1Remote, jLabelInput2Remote;
     private JTextField jTextFieldInput1Remote, jTextFieldInput2Remote;
@@ -22,10 +23,11 @@ public class TemperatureView extends JFrame implements Subscriber {
     private JMenuBar menuBarRemote;
     private JMenuItem f2c, c2f, exit;
     private TemperatureModel temperatureModelRemote;
-    private EnterController enterControllerRemote;
+    private CommandProcessor commandProcessorRemote;
     private boolean isC = false;
 
-    TemperatureView(TemperatureModel temperatureModel) {
+    TemperatureView(TemperatureModel temperatureModel, CommandProcessor commandProcessor) {
+        commandProcessorRemote = commandProcessor;
         temperatureModelRemote = temperatureModel;
         temperatureModelRemote.subscriber(this);
 
@@ -38,25 +40,43 @@ public class TemperatureView extends JFrame implements Subscriber {
         setJMenuBar(menuBarRemote);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
+        setMenuController();
+        setEnterController();
     }
 
     public void Show() {
         setVisible(true);
     }
 
+    public void Hide() {
+        setVisible(false);
+    }
+
     public void setIsC(boolean isC) {
         this.isC = isC;
     }
 
-    public void setMenuController(MenuController menuController) {
-        f2c.addActionListener(menuController);
-        c2f.addActionListener(menuController);
-        exit.addActionListener(menuController);
+    // public void setMenuController(MenuController menuController) {
+    //     f2c.addActionListener(menuController);
+    //     c2f.addActionListener(menuController);
+    //     exit.addActionListener(menuController);
+    // }
+
+    public void setMenuController() {
+        f2c.addActionListener(this);
+        c2f.addActionListener(this);
+        exit.addActionListener(this);
     }
 
-    public void setEnterController(EnterController enterController) {
-        jTextFieldInput1Remote.addActionListener(enterController);
-        jTextFieldInput2Remote.addActionListener(enterController);
+    // public void setEnterController(EnterController enterController) {
+    //     jTextFieldInput1Remote.addActionListener(enterController);
+    //     jTextFieldInput2Remote.addActionListener(enterController);
+    // }
+
+    public void setEnterController() {
+        jTextFieldInput1Remote.addActionListener(this);
+        jTextFieldInput2Remote.addActionListener(this);
     }
 
     public void buildMenu() {
@@ -83,10 +103,6 @@ public class TemperatureView extends JFrame implements Subscriber {
         jTextFieldInput2Remote = new JTextField(10);
         jPanelRemote.add(jLabelInput2Remote);
         jPanelRemote.add(jTextFieldInput2Remote);
-
-        // enterController
-        jTextFieldInput1Remote.addActionListener(enterControllerRemote);
-        jTextFieldInput2Remote.addActionListener(enterControllerRemote);
     }
 
     public JTextField getjTextFieldInput1Remote() {
@@ -97,7 +113,7 @@ public class TemperatureView extends JFrame implements Subscriber {
         return jTextFieldInput2Remote;
     }
 
-
+    
     @Override
     public void update() {
         double result = temperatureModelRemote.getResult();
@@ -107,6 +123,47 @@ public class TemperatureView extends JFrame implements Subscriber {
             jTextFieldInput1Remote.setText(s);
         } else {
             jTextFieldInput2Remote.setText(s);
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Command command = null;
+        String cmd = e.getActionCommand();
+        double c, f;
+        
+        try {
+            Double.parseDouble(cmd);
+            if (cmd.equals(getjTextFieldInput2Remote().getText())) {
+                cmd = "f2c";
+            } else if (cmd.equals(getjTextFieldInput1Remote().getText())) {
+                cmd = "c2f";
+            }
+        } catch (java.lang.NumberFormatException ex) {
+
+        }
+
+        try {
+            if (cmd.equals("f2c")) {
+                f = Double.parseDouble(getjTextFieldInput2Remote().getText());
+                setIsC(true);
+
+                command = new f2cCommand(temperatureModelRemote, f);
+                
+            } else if (cmd.equals("c2f")) {
+                c = Double.parseDouble(getjTextFieldInput1Remote().getText());
+                setIsC(false);
+                
+                command = new c2fCommand(temperatureModelRemote, c);
+            } else if (cmd.equals("exit")) {
+                command = new exitCommand(temperatureModelRemote);
+            }
+        } catch (java.lang.NumberFormatException ex) {
+            return;
+        }
+
+        if (command != null) {
+            commandProcessorRemote.execute(command);
         }
     }
 }
