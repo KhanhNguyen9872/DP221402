@@ -23,13 +23,11 @@ public class TemperatureView extends JFrame implements Subscriber {
     private JMenuBar menuBarRemote;
     private JMenuItem f2c, c2f, exit;
     private TemperatureModel temperatureModelRemote;
-    private CommandProcessor commandProcessorRemote;
     private MenuController menuControllerRemote;
     private EnterController enterControllerRemote;
     private boolean isC = false;
 
-    TemperatureView(TemperatureModel temperatureModel, CommandProcessor commandProcessor) {
-        commandProcessorRemote = commandProcessor;
+    TemperatureView(TemperatureModel temperatureModel) {
         temperatureModelRemote = temperatureModel;
         temperatureModelRemote.subscriber(this);
 
@@ -42,9 +40,6 @@ public class TemperatureView extends JFrame implements Subscriber {
         setJMenuBar(menuBarRemote);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
-        setMenuController();
-        setEnterController();
     }
 
     public void Show() {
@@ -59,18 +54,29 @@ public class TemperatureView extends JFrame implements Subscriber {
         this.isC = isC;
     }
 
-    public void setMenuController() {
-        menuControllerRemote = new MenuController();
-        f2c.addActionListener(menuControllerRemote);
-        c2f.addActionListener(menuControllerRemote);
-        exit.addActionListener(menuControllerRemote);
+    public void setMenuController(MenuController menuController) {
+        this.menuControllerRemote = menuController;
+        f2c.addActionListener(menuController);
+        c2f.addActionListener(menuController);
+        exit.addActionListener(menuController);
     }
 
-    public void setEnterController() {
-        enterControllerRemote = new EnterController();
-        jTextFieldInput1Remote.addActionListener(enterControllerRemote);
-        jTextFieldInput2Remote.addActionListener(enterControllerRemote);
+    // public void setMenuController() {
+    //     f2c.addActionListener(this);
+    //     c2f.addActionListener(this);
+    //     exit.addActionListener(this);
+    // }
+
+    public void setEnterController(EnterController enterController) {
+        this.enterControllerRemote = enterController;
+        jTextFieldInput1Remote.addActionListener(enterController);
+        jTextFieldInput2Remote.addActionListener(enterController);
     }
+
+    // public void setEnterController() {
+    //     jTextFieldInput1Remote.addActionListener(this);
+    //     jTextFieldInput2Remote.addActionListener(this);
+    // }
 
     public void buildMenu() {
         menuBarRemote = new JMenuBar();
@@ -119,71 +125,44 @@ public class TemperatureView extends JFrame implements Subscriber {
         }
     }
 
-    class MenuController implements ActionListener {    
-        public MenuController() {
-        }
-    
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Command command = null;
-            String cmd = e.getActionCommand();
-            double c, f;
-    
-            if (cmd.equals("f2c")) {
-                f = Double.parseDouble(getjTextFieldInput2Remote().getText());
-                setIsC(true);
-    
-                command = new f2cCommand(temperatureModelRemote, f);
+    // @Override
+    // public void actionPerformed(ActionEvent e) {
+    //     Command command = null;
+    //     String cmd = e.getActionCommand();
+    //     double c, f;
+        
+    //     try {
+    //         Double.parseDouble(cmd);
+    //         if (cmd.equals(getjTextFieldInput2Remote().getText())) {
+    //             cmd = "f2c";
+    //         } else if (cmd.equals(getjTextFieldInput1Remote().getText())) {
+    //             cmd = "c2f";
+    //         }
+    //     } catch (java.lang.NumberFormatException ex) {
+
+    //     }
+
+    //     try {
+    //         if (cmd.equals("f2c")) {
+    //             f = Double.parseDouble(getjTextFieldInput2Remote().getText());
+    //             setIsC(true);
+
+    //             command = new f2cCommand(temperatureModelRemote, f);
                 
-            } else if (cmd.equals("c2f")) {
-                c = Double.parseDouble(getjTextFieldInput1Remote().getText());
-                setIsC(false);
+    //         } else if (cmd.equals("c2f")) {
+    //             c = Double.parseDouble(getjTextFieldInput1Remote().getText());
+    //             setIsC(false);
                 
-                command = new c2fCommand(temperatureModelRemote, c);
-            } else if (cmd.equals("exit")) {
-                command = new exitCommand(temperatureModelRemote);
-            }
+    //             command = new c2fCommand(temperatureModelRemote, c);
+    //         } else if (cmd.equals("exit")) {
+    //             command = new exitCommand(temperatureModelRemote);
+    //         }
+    //     } catch (java.lang.NumberFormatException ex) {
+    //         return;
+    //     }
 
-            if (command != null) {
-                commandProcessorRemote.execute(command);
-            }
-        }
-    }
-
-    class EnterController implements ActionListener {
-        public EnterController() {
-
-        }
-    
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            Command command = null;
-            String cmd = "";
-            String num = e.getActionCommand();
-            if (num.equals(getjTextFieldInput2Remote().getText())) {
-                cmd = "f2c";
-            } else if (num.equals(getjTextFieldInput1Remote().getText())) {
-                cmd = "c2f";
-            }
-            double c, f;
-    
-            if (cmd.equals("f2c")) {
-                f = Double.parseDouble(num);
-                setIsC(true);
-    
-                command = new f2cCommand(temperatureModelRemote, f);
-            } else if (cmd.equals("c2f")) {
-                c = Double.parseDouble(num);
-                setIsC(false);
-                
-                command = new c2fCommand(temperatureModelRemote, c);
-            } else if (cmd.equals("exit")) {
-                command = new exitCommand(temperatureModelRemote);
-            }
-
-            if (command != null) {
-                commandProcessorRemote.execute(command);
-            }
-        }
-    }
+    //     if (command != null) {
+    //         commandProcessorRemote.execute(command);
+    //     }
+    // }
 }
