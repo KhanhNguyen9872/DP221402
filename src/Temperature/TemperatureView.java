@@ -59,23 +59,12 @@ public class TemperatureView extends JFrame implements Subscriber {
         this.isC = isC;
     }
 
-    // public void setMenuController(MenuController menuController) {
-    //     f2c.addActionListener(menuController);
-    //     c2f.addActionListener(menuController);
-    //     exit.addActionListener(menuController);
-    // }
-
     public void setMenuController() {
         menuControllerRemote = new MenuController();
         f2c.addActionListener(menuControllerRemote);
         c2f.addActionListener(menuControllerRemote);
         exit.addActionListener(menuControllerRemote);
     }
-
-    // public void setEnterController(EnterController enterController) {
-    //     jTextFieldInput1Remote.addActionListener(enterController);
-    //     jTextFieldInput2Remote.addActionListener(enterController);
-    // }
 
     public void setEnterController() {
         enterControllerRemote = new EnterController();
@@ -136,6 +125,7 @@ public class TemperatureView extends JFrame implements Subscriber {
     
         @Override
         public void actionPerformed(ActionEvent e) {
+            Command command = null;
             String cmd = e.getActionCommand();
             double c, f;
     
@@ -143,15 +133,19 @@ public class TemperatureView extends JFrame implements Subscriber {
                 f = Double.parseDouble(getjTextFieldInput2Remote().getText());
                 setIsC(true);
     
-                temperatureModelRemote.f2c(f);
+                command = new f2cCommand(temperatureModelRemote, f);
                 
             } else if (cmd.equals("c2f")) {
                 c = Double.parseDouble(getjTextFieldInput1Remote().getText());
                 setIsC(false);
                 
-                temperatureModelRemote.c2f(c);
+                command = new c2fCommand(temperatureModelRemote, c);
             } else if (cmd.equals("exit")) {
-                temperatureModelRemote.exit();
+                command = new exitCommand(temperatureModelRemote);
+            }
+
+            if (command != null) {
+                commandProcessorRemote.execute(command);
             }
         }
     }
@@ -163,6 +157,7 @@ public class TemperatureView extends JFrame implements Subscriber {
     
         @Override
         public void actionPerformed(ActionEvent e) {
+            Command command = null;
             String cmd = "";
             String num = e.getActionCommand();
             if (num.equals(getjTextFieldInput2Remote().getText())) {
@@ -176,15 +171,18 @@ public class TemperatureView extends JFrame implements Subscriber {
                 f = Double.parseDouble(num);
                 setIsC(true);
     
-                temperatureModelRemote.f2c(f);
-                
+                command = new f2cCommand(temperatureModelRemote, f);
             } else if (cmd.equals("c2f")) {
                 c = Double.parseDouble(num);
                 setIsC(false);
                 
-                temperatureModelRemote.c2f(c);
+                command = new c2fCommand(temperatureModelRemote, c);
             } else if (cmd.equals("exit")) {
-                temperatureModelRemote.exit();
+                command = new exitCommand(temperatureModelRemote);
+            }
+
+            if (command != null) {
+                commandProcessorRemote.execute(command);
             }
         }
     }
