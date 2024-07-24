@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PrepareStatementExample",
+            "request": "launch",
+            "mainClass": "buoi9.PrepareStatementExample",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
+            "name": "ReadDataExample",
+            "request": "launch",
+            "mainClass": "buoi9.ReadDataExample",
+            "projectName": "DP221402_9ee3b516"
+        },
+        {
+            "type": "java",
             "name": "TemperatureApp",
             "request": "launch",
             "mainClass": "Temperature.TemperatureApp",
